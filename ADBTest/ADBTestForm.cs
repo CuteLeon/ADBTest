@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,7 +18,7 @@ namespace ADBTest
         int SwitchHotKey;
 
         Thread TestThread = null;
-        Process ADBProcess = new Process() { StartInfo = new ProcessStartInfo(@"D:\Desktops\adb\adb.exe") { WindowStyle = ProcessWindowStyle.Hidden } };
+        Process ADBProcess = new Process() { StartInfo = new ProcessStartInfo(Path.Combine(Application.StartupPath, @"adb\adb.exe")) { WindowStyle = ProcessWindowStyle.Hidden } };
 
         public ADBTestForm()
         {
@@ -27,6 +28,8 @@ namespace ADBTest
             UnityHotKey = new Hotkey(this.Handle);
             SwitchHotKey = UnityHotKey.RegisterHotkey(Keys.Z, Hotkey.KeyFlags.MOD_ALT);
             UnityHotKey.OnHotkey += new HotkeyEventHandler(OnHotkey);
+
+            MessageBox.Show(Path.Combine(Application.StartupPath, @"adb\adb.exe"));
         }
 
         public void OnHotkey(int HotkeyID)
