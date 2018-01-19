@@ -28,8 +28,6 @@ namespace ADBTest
             UnityHotKey = new Hotkey(this.Handle);
             SwitchHotKey = UnityHotKey.RegisterHotkey(Keys.Z, Hotkey.KeyFlags.MOD_ALT);
             UnityHotKey.OnHotkey += new HotkeyEventHandler(OnHotkey);
-
-            MessageBox.Show(Path.Combine(Application.StartupPath, @"adb\adb.exe"));
         }
 
         public void OnHotkey(int HotkeyID)
@@ -44,10 +42,10 @@ namespace ADBTest
         {
             while (true)
             {
-                ADBProcess.StartInfo.Arguments = "shell input swipe 360 1200 360 1200 20000";
+                ADBProcess.StartInfo.Arguments = string.Format("shell input swipe 360 1200 360 1200 {0}000", InputTimeout.Value);
                 ADBProcess.Start();
                 ADBProcess.WaitForExit();
-                Thread.Sleep(25000);
+                Thread.Sleep(Convert.ToInt32(SleepTimeout.Value) * 1000);
             }
         }
 

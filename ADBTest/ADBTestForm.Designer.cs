@@ -29,25 +29,71 @@
         private void InitializeComponent()
         {
             this.TaskButton = new System.Windows.Forms.Button();
+            this.SleepTimeout = new System.Windows.Forms.NumericUpDown();
+            this.InputTimeout = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.SleepTimeout)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InputTimeout)).BeginInit();
             this.SuspendLayout();
             // 
             // TaskButton
             // 
-            this.TaskButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TaskButton.Dock = System.Windows.Forms.DockStyle.Top;
             this.TaskButton.Location = new System.Drawing.Point(0, 0);
             this.TaskButton.Name = "TaskButton";
-            this.TaskButton.Size = new System.Drawing.Size(120, 44);
+            this.TaskButton.Size = new System.Drawing.Size(163, 47);
             this.TaskButton.TabIndex = 0;
             this.TaskButton.Text = "开始";
             this.TaskButton.UseVisualStyleBackColor = true;
             this.TaskButton.Click += new System.EventHandler(this.TaskButton_Click);
+            // 
+            // SleepTimeout
+            // 
+            this.SleepTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SleepTimeout.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.SleepTimeout.Location = new System.Drawing.Point(82, 47);
+            this.SleepTimeout.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.SleepTimeout.Name = "SleepTimeout";
+            this.SleepTimeout.Size = new System.Drawing.Size(80, 26);
+            this.SleepTimeout.TabIndex = 1;
+            this.SleepTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SleepTimeout.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            // 
+            // InputTimeout
+            // 
+            this.InputTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.InputTimeout.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.InputTimeout.Location = new System.Drawing.Point(1, 47);
+            this.InputTimeout.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.InputTimeout.Name = "InputTimeout";
+            this.InputTimeout.Size = new System.Drawing.Size(80, 26);
+            this.InputTimeout.TabIndex = 2;
+            this.InputTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.InputTimeout.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
             // 
             // ADBTestForm
             // 
             this.AcceptButton = this.TaskButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(120, 44);
+            this.ClientSize = new System.Drawing.Size(163, 74);
+            this.Controls.Add(this.InputTimeout);
+            this.Controls.Add(this.SleepTimeout);
             this.Controls.Add(this.TaskButton);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -56,6 +102,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ADBTest";
             this.TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)(this.SleepTimeout)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InputTimeout)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -63,6 +111,8 @@
         #endregion
 
         private System.Windows.Forms.Button TaskButton;
+        private System.Windows.Forms.NumericUpDown SleepTimeout;
+        private System.Windows.Forms.NumericUpDown InputTimeout;
     }
 }
 
