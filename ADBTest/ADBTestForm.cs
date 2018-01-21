@@ -59,6 +59,7 @@ namespace ADBTest
             }
             else
             {
+                ADBProcess?.Kill();
                 TestThread?.Abort();
                 TestThread = null;
             }
