@@ -54,12 +54,12 @@ namespace ADBTest
             if (TestThread == null)
             {
                 TestThread = new Thread(Egg) { IsBackground = true };
-
                 TestThread.Start();
+                this.TopMost = true;
             }
             else
             {
-                ADBProcess?.Kill();
+                if (!ADBProcess.HasExited) ADBProcess.Kill();
                 TestThread?.Abort();
                 TestThread = null;
             }
