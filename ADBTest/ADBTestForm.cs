@@ -45,8 +45,16 @@ namespace ADBTest
                 ADBProcess.StartInfo.Arguments = string.Format("shell input swipe 360 1200 360 1200 {0}000", InputTimeout.Value);
                 ADBProcess.Start();
                 ADBProcess.WaitForExit();
+                if (DateTime.Now.Minute % 15 ==0) SaveScreen();//截图
                 Thread.Sleep(Convert.ToInt32(SleepTimeout.Value) * 1000);
             }
+        }
+
+        private void SaveScreen()
+        {
+            ADBProcess.StartInfo.Arguments = string.Format("shell /system/bin/screencap -p /sdcard/screenshot-{0}.png", DateTime.Now.ToString("MM-dd+HH-mm-ss"));
+            ADBProcess.Start();
+            //ADBProcess.WaitForExit();
         }
 
         private void Switch()
@@ -70,6 +78,11 @@ namespace ADBTest
         private void TaskButton_Click(object sender, EventArgs e)
         {
             Switch();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveScreen();
         }
     }
 }

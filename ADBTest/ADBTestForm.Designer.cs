@@ -31,6 +31,7 @@
             this.TaskButton = new System.Windows.Forms.Button();
             this.SleepTimeout = new System.Windows.Forms.NumericUpDown();
             this.InputTimeout = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.SleepTimeout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.InputTimeout)).BeginInit();
             this.SuspendLayout();
@@ -50,14 +51,14 @@
             // 
             this.SleepTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SleepTimeout.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.SleepTimeout.Location = new System.Drawing.Point(82, 47);
+            this.SleepTimeout.Location = new System.Drawing.Point(102, 47);
             this.SleepTimeout.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.SleepTimeout.Name = "SleepTimeout";
-            this.SleepTimeout.Size = new System.Drawing.Size(80, 26);
+            this.SleepTimeout.Size = new System.Drawing.Size(60, 26);
             this.SleepTimeout.TabIndex = 1;
             this.SleepTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.SleepTimeout.Value = new decimal(new int[] {
@@ -77,7 +78,7 @@
             0,
             0});
             this.InputTimeout.Name = "InputTimeout";
-            this.InputTimeout.Size = new System.Drawing.Size(80, 26);
+            this.InputTimeout.Size = new System.Drawing.Size(60, 26);
             this.InputTimeout.TabIndex = 2;
             this.InputTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.InputTimeout.Value = new decimal(new int[] {
@@ -86,12 +87,23 @@
             0,
             0});
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(61, 47);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(40, 26);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "截图";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ADBTestForm
             // 
             this.AcceptButton = this.TaskButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(163, 74);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.InputTimeout);
             this.Controls.Add(this.SleepTimeout);
             this.Controls.Add(this.TaskButton);
@@ -113,6 +125,7 @@
         private System.Windows.Forms.Button TaskButton;
         private System.Windows.Forms.NumericUpDown SleepTimeout;
         private System.Windows.Forms.NumericUpDown InputTimeout;
+        private System.Windows.Forms.Button button1;
     }
 }
 
