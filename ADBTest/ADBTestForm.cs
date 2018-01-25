@@ -20,6 +20,10 @@ namespace ADBTest
         Thread TestThread = null;
         Process ADBProcess = new Process() { StartInfo = new ProcessStartInfo(Path.Combine(Application.StartupPath, @"adb\adb.exe")) { WindowStyle = ProcessWindowStyle.Hidden } };
 
+        NotifyIcon UnityNotifyIcon = new NotifyIcon();
+        Bitmap StartIcon = new Bitmap(48, 48);
+        Bitmap AbortIcon = new Bitmap(48, 48);
+
         public ADBTestForm()
         {
             InitializeComponent();
@@ -28,6 +32,16 @@ namespace ADBTest
             UnityHotKey = new Hotkey(this.Handle);
             SwitchHotKey = UnityHotKey.RegisterHotkey(Keys.Z, Hotkey.KeyFlags.MOD_ALT);
             UnityHotKey.OnHotkey += new HotkeyEventHandler(OnHotkey);
+
+            using (Graphics IconGraphics = Graphics.FromImage(StartIcon))
+                IconGraphics.FillEllipse(Brushes.OrangeRed, 0, 0, 48, 48);
+            using (Graphics IconGraphics = Graphics.FromImage(AbortIcon))
+                IconGraphics.FillEllipse(Brushes.DeepSkyBlue, 0, 0, 48, 48);
+
+            UnityNotifyIcon.Click += delegate { Switch(); };
+            UnityNotifyIcon.Visible = true;
+            UnityNotifyIcon.Text = "点击开始";
+            UnityNotifyIcon.Icon = Icon.FromHandle(AbortIcon.GetHicon());
         }
 
         public void OnHotkey(int HotkeyID)
@@ -64,6 +78,7 @@ namespace ADBTest
                 TestThread = new Thread(Egg) { IsBackground = true };
                 TestThread.Start();
                 this.TopMost = true;
+
             }
             else
             {
@@ -72,6 +87,8 @@ namespace ADBTest
                 TestThread = null;
             }
             TaskButton.Text = TestThread == null ? "已停止" : "已开始";
+            UnityNotifyIcon.Text = TaskButton.Text;
+            UnityNotifyIcon.Icon = Icon.FromHandle((TestThread == null ? AbortIcon : StartIcon).GetHicon());
             TaskButton.BackColor = TestThread == null ? Color.DeepSkyBlue : Color.OrangeRed;
         }
 
@@ -84,5 +101,12 @@ namespace ADBTest
         {
             SaveScreen();
         }
+
+        private void ADBTestForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            UnityHotKey.UnregisterHotkeys();
+            UnityNotifyIcon.Dispose();
+        }
+
     }
 }

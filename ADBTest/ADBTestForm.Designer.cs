@@ -62,7 +62,7 @@
             this.SleepTimeout.TabIndex = 1;
             this.SleepTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.SleepTimeout.Value = new decimal(new int[] {
-            25,
+            18,
             0,
             0,
             0});
@@ -82,7 +82,7 @@
             this.InputTimeout.TabIndex = 2;
             this.InputTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.InputTimeout.Value = new decimal(new int[] {
-            25,
+            22,
             0,
             0,
             0});
@@ -114,6 +114,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ADBTest";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ADBTestForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.SleepTimeout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.InputTimeout)).EndInit();
             this.ResumeLayout(false);
