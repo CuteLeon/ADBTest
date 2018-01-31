@@ -93,7 +93,7 @@ namespace ADBTest
             //打开箱子
             if (OpenBoxCheckBox.Checked && DateTime.Now.Minute % 6 == 0)
             {
-                
+                OpenBox();
             }
 
             Thread.Sleep(Convert.ToInt32(SleepTimeout.Value) * 1000);
@@ -136,12 +136,59 @@ namespace ADBTest
                     OpenBoxProcess.StartInfo.Arguments = string.Format("pull /sdcard/screenshot-forbox.png {0}", ScreenShotPath);
                     OpenBoxProcess.Start();
                     OpenBoxProcess.WaitForExit();
-                    //File.Copy(ScreenShotPath, @"D:\1.png", true);
+                    //File.Copy(ScreenShotPath, @"D:\ScreenShot-ForBox.png", true);
                     //遍历箱子坐标
-                    foreach (Tuple<Point, bool> CheckResult in CheckBoxes(ScreenShotPath))
+                    foreach (Tuple<Point, IconType> CheckResult in CheckBoxes(ScreenShotPath))
                     {
-                        Debug.Print(CheckResult.Item1.ToString());
+                        Debug.Print(string.Format("{0} : {1}", CheckResult.Item1.ToString(), CheckResult.Item2.ToString()));
+
+                        switch (CheckResult.Item2)
+                        {
+                            case IconType.Box:
+                                {
+                                    //Button: {210, 766, 300, 80}
+                                    Debug.Print("盒子");
+                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", CheckResult.Item1.X, CheckResult.Item1.Y);
+                                    OpenBoxProcess.Start();
+                                    OpenBoxProcess.WaitForExit();
+                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 360, 806);
+                                    OpenBoxProcess.Start();
+                                    OpenBoxProcess.WaitForExit();
+                                    break;
+                                }
+                            case IconType.AD:
+                                {
+                                    //No,Thx: {140, 767, 214, 80}
+                                    Debug.Print("广告");
+                                    /*
+                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", CheckResult.Item1.X, CheckResult.Item1.Y);
+                                    OpenBoxProcess.Start();
+                                    OpenBoxProcess.WaitForExit();
+                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 247, 807);
+                                    OpenBoxProcess.Start();
+                                    OpenBoxProcess.WaitForExit();
+                                     */
+                                    break;
+                                }
+                            case IconType.News:
+                                {
+                                    Debug.Print("新闻");
+                                    break;
+                                }
+                            case IconType.Unknown:
+                                {
+                                    Debug.Print("未知的图标类型");
+                                    break;
+                                }
+                            default:
+                                {
+                                    Debug.Print("其他的图标类型");
+                                    break;
+                                }
+                        }
                     }
+
+                    if (File.Exists(ScreenShotPath)) File.Delete(ScreenShotPath);
                 }))
                 { IsBackground = true };
                 OpenBoxThread.Start();
@@ -153,7 +200,7 @@ namespace ADBTest
         /// </summary>
         /// <param name="ScreenBoxPath">棘突文件路径</param>
         /// <returns>箱子坐标，是否为广告</returns>
-        private IEnumerable<Tuple<Point, bool>> CheckBoxes(string ScreenBoxPath)
+        private IEnumerable<Tuple<Point, IconType>> CheckBoxes(string ScreenBoxPath)
         {
             //报纸 x1
             //广告 x1
@@ -174,7 +221,7 @@ namespace ADBTest
                 ScreenShotBitmap = Image.FromStream(ScreenShotStream) as Bitmap;
             }
 
-            //检查箱子位置
+            //检查箱子位置及图标
             foreach (Point BoxLocation in BoxLocations)
             {
                 if (IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + 32, BoxLocation.Y + 8)) &&
@@ -183,42 +230,8 @@ namespace ADBTest
                     IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + 56, BoxLocation.Y + 32))
                     )
                 {
-                    switch (GetIconType(ScreenShotBitmap.GetPixel(BoxLocation.X + 32, BoxLocation.Y + 32)))
-                    {
-                        case IconType.Box:
-                            {
-                                //Button: {210, 766, 300, 80}
-                                Debug.Print("盒子");
-                                OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", BoxLocation.X + 32, BoxLocation.Y + 32);
-                                OpenBoxProcess.Start();
-                                OpenBoxProcess.WaitForExit();
-                                OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 210, 766);
-                                OpenBoxProcess.Start();
-                                OpenBoxProcess.WaitForExit();
-                                break;
-                            }
-                        case IconType.AD:
-                            {
-                                Debug.Print("广告");
-                                break;
-                            }
-                        case IconType.News:
-                            {
-                                Debug.Print("新闻");
-                                break;
-                            }
-                        case IconType.Unknown:
-                            {
-                                Debug.Print("未知的图标类型");
-                                break;
-                            }
-                        default:
-                            {
-                                Debug.Print("其他的图标类型");
-                                break;
-                            }
-                    }
-                    yield return new Tuple<Point, bool>(new Point(BoxLocation.X + 32, BoxLocation.Y + 32), true);
+                    yield return new Tuple<Point, IconType>(new Point(BoxLocation.X + 32, BoxLocation.Y + 32), 
+                        GetIconType(ScreenShotBitmap.GetPixel(BoxLocation.X + 32, BoxLocation.Y + 32)));
                 }
             }
 
