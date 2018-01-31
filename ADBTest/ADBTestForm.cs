@@ -18,6 +18,16 @@ namespace ADBTest
 
         Hotkey UnityHotKey;
         int SwitchHotKey;
+        int _TickCount = 0;
+        int TickCouct
+        {
+            get => _TickCount;
+            set
+            {
+                _TickCount = value;
+                this.Text = string.Format("Egg Inc. [计数器: {0}]", _TickCount);
+            }
+        }
 
         Thread ADBThread = null;
         Process ADBProcess = new Process() { StartInfo = new ProcessStartInfo(Path.Combine(Application.StartupPath, @"adb\adb.exe")) { WindowStyle = ProcessWindowStyle.Hidden } };
@@ -42,6 +52,7 @@ namespace ADBTest
 
         public ADBTestForm()
         {
+            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
 
             //热键为 ALT+Z
@@ -72,6 +83,8 @@ namespace ADBTest
         {
             while (true)
             {
+                TickCouct++;
+
                 ADBProcess.StartInfo.Arguments = string.Format("shell input swipe 360 1200 360 1200 {0}000", InputTimeout.Value);
                 ADBProcess.Start();
                 ADBProcess.WaitForExit();
@@ -86,12 +99,12 @@ namespace ADBTest
         private void ADBIdle()
         {
             //截图
-            if (ScreenShotCheckBox.Checked && DateTime.Now.Minute % 15 == 0)
+            if (ScreenShotCheckBox.Checked && TickCouct % 15 == 0)
             {
                 ScreenShot();
             }
             //打开箱子
-            if (OpenBoxCheckBox.Checked && DateTime.Now.Minute % 3 == 0)
+            if (OpenBoxCheckBox.Checked && TickCouct % 5 == 0)
             {
                 OpenBox();
             }

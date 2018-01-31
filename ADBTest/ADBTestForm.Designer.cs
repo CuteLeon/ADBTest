@@ -57,7 +57,7 @@
             // 
             this.SleepTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SleepTimeout.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.SleepTimeout.Location = new System.Drawing.Point(81, 47);
+            this.SleepTimeout.Location = new System.Drawing.Point(81, 48);
             this.SleepTimeout.Minimum = new decimal(new int[] {
             1,
             0,
@@ -77,7 +77,7 @@
             // 
             this.InputTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.InputTimeout.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.InputTimeout.Location = new System.Drawing.Point(1, 47);
+            this.InputTimeout.Location = new System.Drawing.Point(1, 48);
             this.InputTimeout.Minimum = new decimal(new int[] {
             1,
             0,
@@ -95,20 +95,20 @@
             // 
             // ScreenShotCheckBox
             // 
-            this.ScreenShotCheckBox.BackColor = System.Drawing.Color.White;
-            this.ScreenShotCheckBox.Location = new System.Drawing.Point(1, 74);
+            this.ScreenShotCheckBox.BackColor = System.Drawing.SystemColors.Control;
+            this.ScreenShotCheckBox.Location = new System.Drawing.Point(1, 75);
             this.ScreenShotCheckBox.Name = "ScreenShotCheckBox";
             this.ScreenShotCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.ScreenShotCheckBox.Size = new System.Drawing.Size(161, 21);
             this.ScreenShotCheckBox.TabIndex = 4;
-            this.ScreenShotCheckBox.Text = "每刻自动截屏";
+            this.ScreenShotCheckBox.Text = "自动截屏记录";
             this.ScreenShotCheckBox.UseVisualStyleBackColor = false;
             this.ScreenShotCheckBox.CheckedChanged += new System.EventHandler(this.ScreenShotCheckBox_CheckedChanged);
             // 
             // OpenBoxCheckBox
             // 
-            this.OpenBoxCheckBox.BackColor = System.Drawing.Color.White;
-            this.OpenBoxCheckBox.Location = new System.Drawing.Point(1, 96);
+            this.OpenBoxCheckBox.BackColor = System.Drawing.SystemColors.Control;
+            this.OpenBoxCheckBox.Location = new System.Drawing.Point(1, 97);
             this.OpenBoxCheckBox.Name = "OpenBoxCheckBox";
             this.OpenBoxCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.OpenBoxCheckBox.Size = new System.Drawing.Size(161, 21);
@@ -122,7 +122,7 @@
             this.AcceptButton = this.TaskButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(163, 119);
             this.Controls.Add(this.OpenBoxCheckBox);
             this.Controls.Add(this.ScreenShotCheckBox);
