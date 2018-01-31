@@ -91,7 +91,7 @@ namespace ADBTest
                 ScreenShot();
             }
             //打开箱子
-            if (OpenBoxCheckBox.Checked && DateTime.Now.Minute % 6 == 0)
+            if (OpenBoxCheckBox.Checked && DateTime.Now.Minute % 3 == 0)
             {
                 OpenBox();
             }
