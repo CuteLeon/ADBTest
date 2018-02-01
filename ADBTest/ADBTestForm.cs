@@ -99,7 +99,7 @@ namespace ADBTest
         private void ADBIdle()
         {
             //截图
-            if (ScreenShotCheckBox.Checked && TickCouct % 15 == 0)
+            if (ScreenShotCheckBox.Checked && TickCouct % 24 == 0)
             {
                 ScreenShot();
             }
