@@ -51,6 +51,8 @@ namespace ADBTest
             get => _activated;
             set
             {
+                _activated = value;
+
                 try{
                     if (!ADBProcess.HasExited) ADBProcess.Kill();
                 }catch (InvalidOperationException) { }
@@ -64,7 +66,6 @@ namespace ADBTest
 
                 if (value)
                 {
-                    _activated = value;
                     ADBThread = new Thread(Egg) { IsBackground = true };
                     ADBThread.Start();
                     this.TopMost = true;
