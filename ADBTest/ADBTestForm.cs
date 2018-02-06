@@ -14,18 +14,21 @@ namespace ADBTest
 {
     public partial class ADBTestForm : Form
     {
+        //适用屏幕分辨率：720 x 1280
+        
         //TODO:使用UnityNotifyIcon弹出错误信息气泡提示
 
         Hotkey UnityHotKey;
         int SwitchHotKey;
-        int _TickCount = 0;
+        int _tickCount = 0;
         int TickCouct
         {
-            get => _TickCount;
+            get => _tickCount;
             set
             {
-                _TickCount = value;
-                this.Text = string.Format("Egg Inc. [计数器: {0}]", _TickCount);
+                _tickCount = value;
+                this.Text = string.Format("Egg Inc. [计数器: {0}]", _tickCount);
+                UnityNotifyIcon.Text = string.Format("{0} : {1}", TaskButton.Text, _tickCount);
             }
         }
 
@@ -41,6 +44,53 @@ namespace ADBTest
         NotifyIcon UnityNotifyIcon = new NotifyIcon();
         Bitmap StartIcon = new Bitmap(48, 48);
         Bitmap AbortIcon = new Bitmap(48, 48);
+
+        private bool _activated = false;
+        private bool HelperActivated
+        {
+            get => _activated;
+            set
+            {
+                try{
+                    if (!ADBProcess.HasExited) ADBProcess.Kill();
+                }catch (InvalidOperationException) { }
+                try{
+                    if (!ScreenShotProcess.HasExited) ScreenShotProcess.Kill();
+                }catch (InvalidOperationException) { }
+
+                try{
+                    if (!OpenBoxProcess.HasExited) OpenBoxProcess.Kill();
+                }catch (InvalidOperationException) { }
+
+                if (value)
+                {
+                    _activated = value;
+                    ADBThread = new Thread(Egg) { IsBackground = true };
+                    ADBThread.Start();
+                    this.TopMost = true;
+
+                    TaskButton.Text = "已开始";
+                    UnityNotifyIcon.Text = string.Format("{0} : {1}", TaskButton.Text, TickCouct);
+                    UnityNotifyIcon.Icon = Icon.FromHandle(StartIcon.GetHicon());
+                    TaskButton.BackColor = Color.Orange;
+                }
+                else
+                {
+                    ADBThread?.Abort();
+                    ADBThread = null;
+                    ScreenShotThread?.Abort();
+                    ScreenShotThread = null;
+                    OpenBoxThread?.Abort();
+                    OpenBoxThread = null;
+
+                    TaskButton.Text = "已停止";
+                    UnityNotifyIcon.Text = string.Format("{0} : {1}", TaskButton.Text, TickCouct);
+                    UnityNotifyIcon.Icon = Icon.FromHandle(AbortIcon.GetHicon());
+                    TaskButton.BackColor = Color.DeepSkyBlue;
+                }
+            }
+                
+        }
 
         private enum IconType
         {
@@ -65,17 +115,21 @@ namespace ADBTest
             using (Graphics IconGraphics = Graphics.FromImage(AbortIcon))
                 IconGraphics.FillEllipse(Brushes.DeepSkyBlue, 0, 0, 48, 48);
 
-            UnityNotifyIcon.Click += delegate { Switch(); };
+            UnityNotifyIcon.Click += delegate { HelperActivated = !HelperActivated; };
             UnityNotifyIcon.Visible = true;
             UnityNotifyIcon.Text = "点击开始";
             UnityNotifyIcon.Icon = Icon.FromHandle(AbortIcon.GetHicon());
+
+#if (! DEBUG)
+            TestButton.Hide();
+#endif
         }
 
         public void OnHotkey(int HotkeyID)
         {
             if (HotkeyID == SwitchHotKey)
             {
-                Switch();
+                HelperActivated = !HelperActivated;
             }
         }
 
@@ -171,16 +225,28 @@ namespace ADBTest
                                 }
                             case IconType.AD:
                                 {
-                                    //No,Thx: {140, 767, 214, 80}
                                     Debug.Print("广告");
-                                    /*
+
+                                    //No THANKS : { 140, 767, 214, 80 }
+                                    //WATCH : { 366, 767, 214, 80 }
+
+                                    //还没有退出广告的代码，暂不开启功能
+                                    break;
+
+                                    /* 广告类型：
+                                     * 0：VPN未连接时不会进入广告 / 注意广告时间内不要息屏
+                                     * 1：15秒或25秒后自动关闭
+                                     * 2：25秒后广告结束，但无法使用返回键返回游戏，只能点击屏幕右上角的关闭按钮才可以关闭按钮
+                                     * 3：15秒或25秒后广告结束，可以通过返回键关闭广告
+                                     */
+
                                     OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", CheckResult.Item1.X, CheckResult.Item1.Y);
                                     OpenBoxProcess.Start();
                                     OpenBoxProcess.WaitForExit();
-                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 247, 807);
+                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 473, 807);
                                     OpenBoxProcess.Start();
                                     OpenBoxProcess.WaitForExit();
-                                     */
+
                                     break;
                                 }
                             case IconType.News:
@@ -288,44 +354,9 @@ namespace ADBTest
             return IconType.Unknown;
         }
 
-        /// <summary>
-        /// 切换开关
-        /// </summary>
-        private void Switch()
-        {
-            if (ADBThread == null)
-            {
-                ADBThread = new Thread(Egg) { IsBackground = true };
-                ADBThread.Start();
-                this.TopMost = true;
-            }
-            else
-            {
-                try
-                {
-                    if (!ADBProcess.HasExited) ADBProcess.Kill();
-                    if (!ScreenShotProcess.HasExited) ScreenShotProcess.Kill();
-                    if (!OpenBoxProcess.HasExited) OpenBoxProcess.Kill();
-                }
-                catch{ }
-
-                ADBThread?.Abort();
-                ADBThread = null;
-                ScreenShotThread?.Abort();
-                ScreenShotThread = null;
-                OpenBoxThread?.Abort();
-                OpenBoxThread = null;
-            }
-
-            TaskButton.Text = ADBThread == null ? "已停止" : "已开始";
-            UnityNotifyIcon.Text = TaskButton.Text;
-            UnityNotifyIcon.Icon = Icon.FromHandle((ADBThread == null ? AbortIcon : StartIcon).GetHicon());
-            TaskButton.BackColor = ADBThread == null ? Color.DeepSkyBlue : Color.Orange;
-        }
-
         private void TaskButton_Click(object sender, EventArgs e)
         {
-            Switch();
+            HelperActivated = !HelperActivated;
         }
         
         private void ADBTestForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -334,16 +365,28 @@ namespace ADBTest
             UnityNotifyIcon.Dispose();
         }
 
-        private void ScreenShotCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ScreenShotCheckBox.Checked)
-                ScreenShot();
-        }
-
         private void OpenBoxCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (OpenBoxCheckBox.Checked)
-                OpenBox();
+            PlayADCheckBox.Enabled = OpenBoxCheckBox.Checked;
+        }
+
+        private void ScreenShotButton_Click(object sender, EventArgs e)
+        {
+            ScreenShot();
+        }
+
+        private void OpenBoxButton_Click(object sender, EventArgs e)
+        {
+            OpenBox();
+        }
+
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+#if (DEBUG)
+            OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 473, 807);
+            OpenBoxProcess.Start();
+            OpenBoxProcess.WaitForExit();
+#endif
         }
 
     }
