@@ -14,9 +14,8 @@ namespace ADBTest
 {
     public partial class ADBTestForm : Form
     {
-        //适用屏幕分辨率：720 x 1280
-        
-        //TODO:使用UnityNotifyIcon弹出错误信息气泡提示
+        //适用屏幕分辨率 : OPPO A59S (720 x 1280)
+        //适用屏幕分辨率 : HUAWEI M3 (1600 x 2560)
 
         Hotkey UnityHotKey;
         int SwitchHotKey;
@@ -31,6 +30,61 @@ namespace ADBTest
                 UnityNotifyIcon.Text = string.Format("{0} : {1}", TaskButton.Text, _tickCount);
             }
         }
+
+        private enum AndroidDeviceModel
+        {
+            OPPO_A59S=0,
+            HUAIWEI_M3=1
+        }
+        private AndroidDeviceModel _deviceModel = AndroidDeviceModel.OPPO_A59S;
+        private AndroidDeviceModel DeviceModel
+        {
+            get => _deviceModel;
+            set
+            {
+                _deviceModel = value;
+                switch (value)
+                {
+                    case AndroidDeviceModel.OPPO_A59S:
+                        {
+                            // 720 x 1280
+                            // {20, 1060, 680, 200}
+                            MainButtonLocation = new Point(360, 806);
+                            BoxLocations = new Point[] {
+                                new Point(630, 430),
+                                new Point(630, 340),
+                                new Point(630, 250),
+                                new Point(630, 160)
+                            };
+                            break;
+                        }
+                    case AndroidDeviceModel.HUAIWEI_M3:
+                        {
+                            // 1600 x 2560
+                            // { 35, 2175, 1530, 350}
+                            MainButtonLocation = new Point(800, 2350);
+                            BoxLocations = new Point[] {
+                                new Point(630, 430),
+                                new Point(630, 340),
+                                new Point(630, 250),
+                                new Point(630, 160)
+                            };
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
+        }
+
+        Point[] BoxLocations = new Point[] {
+                new Point(630, 430),
+                new Point(630, 340),
+                new Point(630, 250),
+                new Point(630, 160)
+            };
+        Point OpenBoxButtonLocation = new Point();
+        Point MainButtonLocation = new Point(360, 806);
 
         Thread ADBThread = null;
         Process ADBProcess = new Process() { StartInfo = new ProcessStartInfo(Path.Combine(Application.StartupPath, @"adb\adb.exe")) { WindowStyle = ProcessWindowStyle.Hidden } };
@@ -121,6 +175,8 @@ namespace ADBTest
             UnityNotifyIcon.Text = "点击开始";
             UnityNotifyIcon.Icon = Icon.FromHandle(AbortIcon.GetHicon());
 
+            OPPOA59SRadioButton.Checked += delegate (object s, EventArgs e){ };
+
 #if (! DEBUG)
             TestButton.Hide();
 #endif
@@ -140,7 +196,7 @@ namespace ADBTest
             {
                 TickCouct++;
 
-                ADBProcess.StartInfo.Arguments = string.Format("shell input swipe 360 1200 360 1200 {0}000", InputTimeout.Value);
+                ADBProcess.StartInfo.Arguments = string.Format("shell input swipe {0} {1} {0} {1} {3}000",MainButtonLocation.X, MainButtonLocation.Y, InputTimeout.Value);
                 ADBProcess.Start();
                 ADBProcess.WaitForExit();
 
@@ -219,7 +275,7 @@ namespace ADBTest
                                     OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", CheckResult.Item1.X, CheckResult.Item1.Y);
                                     OpenBoxProcess.Start();
                                     OpenBoxProcess.WaitForExit();
-                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 360, 806);
+                                    OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", OpenBoxButtonLocation.X, OpenBoxButtonLocation.Y);
                                     OpenBoxProcess.Start();
                                     OpenBoxProcess.WaitForExit();
                                     break;
@@ -278,7 +334,7 @@ namespace ADBTest
         /// <summary>
         /// 检查箱子位置
         /// </summary>
-        /// <param name="ScreenBoxPath">棘突文件路径</param>
+        /// <param name="ScreenBoxPath">截图文件路径</param>
         /// <returns>箱子坐标，是否为广告</returns>
         private IEnumerable<Tuple<Point, IconType>> CheckBoxes(string ScreenBoxPath)
         {
@@ -289,12 +345,6 @@ namespace ADBTest
             if (!File.Exists(ScreenBoxPath)) yield break;
 
             //!注意，这里需要从下向上寻找图标，并从下向上 yield return ，否则点击了上方的图标之后，下方的图标会移动到上方被点击后的图标位置
-            Point[] BoxLocations = new Point[] {
-                new Point(630, 430),
-                new Point(630, 340),
-                new Point(630, 250),
-                new Point(630, 160)
-            };
             Bitmap ScreenShotBitmap = null;
             using (FileStream ScreenShotStream = new FileStream(ScreenBoxPath, FileMode.Open))
             {
