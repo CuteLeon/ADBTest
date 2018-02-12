@@ -103,7 +103,7 @@ namespace ADBTest
                 new Point(630, 250),
                 new Point(630, 160)
             };
-        Point OpenBoxButtonLocation = new Point();
+        Point OpenBoxButtonLocation = new Point(360, 806);
         Point MainButtonLocation = new Point(360, 1160);
 
         Thread ADBThread = null;
