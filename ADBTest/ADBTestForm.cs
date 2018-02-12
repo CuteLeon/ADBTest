@@ -104,7 +104,7 @@ namespace ADBTest
                 new Point(630, 160)
             };
         Point OpenBoxButtonLocation = new Point();
-        Point MainButtonLocation = new Point(360, 806);
+        Point MainButtonLocation = new Point(360, 1160);
 
         Thread ADBThread = null;
         Process ADBProcess = new Process() { StartInfo = new ProcessStartInfo(Path.Combine(Application.StartupPath, @"adb\adb.exe")) { WindowStyle = ProcessWindowStyle.Hidden } };
