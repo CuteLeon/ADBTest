@@ -34,7 +34,7 @@ namespace ADBTest
         private enum AndroidDeviceModel
         {
             OPPO_A59S=0,
-            HUAIWEI_M3=1
+            HUAWEI_M3=1
         }
         private AndroidDeviceModel _deviceModel = AndroidDeviceModel.OPPO_A59S;
         private AndroidDeviceModel DeviceModel
@@ -43,32 +43,51 @@ namespace ADBTest
             set
             {
                 _deviceModel = value;
+
                 switch (value)
                 {
                     case AndroidDeviceModel.OPPO_A59S:
                         {
                             // 720 x 1280
                             // {20, 1060, 680, 200}
-                            MainButtonLocation = new Point(360, 806);
+                            MainButtonLocation = new Point(360, 1160);
+                            // (210, 766, 300, 80)
+                            OpenBoxButtonLocation = new Point(360, 806);
+                            // 图标间间隔26px
                             BoxLocations = new Point[] {
+                                // {630, 430, 64, 64}
                                 new Point(630, 430),
+                                // {630, 340, 64, 64}
                                 new Point(630, 340),
+                                // {630, 250, 64, 64}
                                 new Point(630, 250),
+                                // {630, 160, 64, 64}
                                 new Point(630, 160)
                             };
+                            BoxSize = new Size(64, 64);
+                            BoxCheckPadding = new Padding(8, 8, 8, 8);
                             break;
                         }
-                    case AndroidDeviceModel.HUAIWEI_M3:
+                    case AndroidDeviceModel.HUAWEI_M3:
                         {
                             // 1600 x 2560
                             // { 35, 2175, 1530, 350}
                             MainButtonLocation = new Point(800, 2350);
+                            // {537, 1500, 525, 140}
+                            OpenBoxButtonLocation = new Point(800, 1570);
+                            // 图标间间隔45px
                             BoxLocations = new Point[] {
-                                new Point(630, 430),
-                                new Point(630, 340),
-                                new Point(630, 250),
-                                new Point(630, 160)
+                                // {1442, 751, 112, 112}
+                                new Point(1442, 751),
+                                // {1442, 594, 112, 112}
+                                new Point(1442, 594),
+                                // {1442, 437, 112, 112}
+                                new Point(1442, 437),
+                                // {1442, 280, 112, 112}
+                                new Point(1442, 280)
                             };
+                            BoxSize = new Size(112, 112);
+                            BoxCheckPadding = new Padding(16, 16, 16, 16);
                             break;
                         }
                     default:
@@ -76,7 +95,8 @@ namespace ADBTest
                 }
             }
         }
-
+        Padding BoxCheckPadding = new Padding(8, 8, 8, 8);
+        Size BoxSize = new Size(64, 64);
         Point[] BoxLocations = new Point[] {
                 new Point(630, 430),
                 new Point(630, 340),
@@ -175,7 +195,8 @@ namespace ADBTest
             UnityNotifyIcon.Text = "点击开始";
             UnityNotifyIcon.Icon = Icon.FromHandle(AbortIcon.GetHicon());
 
-            OPPOA59SRadioButton.Checked += delegate (object s, EventArgs e){ };
+            OPPOA59SRadioButton.CheckedChanged += delegate (object s, EventArgs e) { if(OPPOA59SRadioButton.Checked) DeviceModel = AndroidDeviceModel.OPPO_A59S; };
+            HUAWEIM3RadioButton.CheckedChanged += delegate (object s, EventArgs e) { if (HUAWEIM3RadioButton.Checked) DeviceModel = AndroidDeviceModel.HUAWEI_M3; };
 
 #if (! DEBUG)
             TestButton.Hide();
@@ -196,7 +217,7 @@ namespace ADBTest
             {
                 TickCouct++;
 
-                ADBProcess.StartInfo.Arguments = string.Format("shell input swipe {0} {1} {0} {1} {3}000",MainButtonLocation.X, MainButtonLocation.Y, InputTimeout.Value);
+                ADBProcess.StartInfo.Arguments = string.Format("shell input swipe {0} {1} {0} {1} {2}000",MainButtonLocation.X, MainButtonLocation.Y, InputTimeout.Value);
                 ADBProcess.Start();
                 ADBProcess.WaitForExit();
 
@@ -270,7 +291,6 @@ namespace ADBTest
                         {
                             case IconType.Box:
                                 {
-                                    //Button: {210, 766, 300, 80}
                                     Debug.Print("盒子");
                                     OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", CheckResult.Item1.X, CheckResult.Item1.Y);
                                     OpenBoxProcess.Start();
@@ -283,9 +303,6 @@ namespace ADBTest
                             case IconType.AD:
                                 {
                                     Debug.Print("广告");
-
-                                    //No THANKS : { 140, 767, 214, 80 }
-                                    //WATCH : { 366, 767, 214, 80 }
 
                                     //还没有退出广告的代码，暂不开启功能
                                     break;
@@ -354,14 +371,14 @@ namespace ADBTest
             //检查箱子位置及图标
             foreach (Point BoxLocation in BoxLocations)
             {
-                if (IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + 32, BoxLocation.Y + 8)) &&
-                    IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + 32, BoxLocation.Y + 56)) &&
-                    IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + 8, BoxLocation.Y + 32)) &&
-                    IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + 56, BoxLocation.Y + 32))
+                if (IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + BoxSize.Width / 2, BoxLocation.Y + BoxCheckPadding.Top)) &&
+                    IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + BoxSize.Width / 2, BoxLocation.Y + BoxSize.Height - BoxCheckPadding.Bottom)) &&
+                    IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + BoxCheckPadding.Left, BoxLocation.Y + BoxSize.Height / 2)) &&
+                    IsWhite(ScreenShotBitmap.GetPixel(BoxLocation.X + BoxSize.Width - BoxCheckPadding.Right, BoxLocation.Y + BoxSize.Height / 2))
                     )
                 {
-                    yield return new Tuple<Point, IconType>(new Point(BoxLocation.X + 32, BoxLocation.Y + 32), 
-                        GetIconType(ScreenShotBitmap.GetPixel(BoxLocation.X + 32, BoxLocation.Y + 32)));
+                    yield return new Tuple<Point, IconType>(new Point(BoxLocation.X + BoxSize.Width / 2, BoxLocation.Y + BoxSize.Height / 2),
+                        GetIconType(ScreenShotBitmap.GetPixel(BoxLocation.X + BoxSize.Width / 2, BoxLocation.Y + BoxSize.Height / 2)));
                 }
             }
 
@@ -434,11 +451,12 @@ namespace ADBTest
         private void TestButton_Click(object sender, EventArgs e)
         {
 #if (DEBUG)
-            OpenBoxProcess.StartInfo.Arguments = string.Format("shell input tap {0} {1}", 473, 807);
-            OpenBoxProcess.Start();
-            OpenBoxProcess.WaitForExit();
+            foreach (Tuple<Point, IconType> CheckResult in CheckBoxes(@"D:\CSharp\ADBTest\Game\OPPO-A59S_3.png"))
+            {
+                Debug.Print(string.Format("{0} : {1}", CheckResult.Item1.ToString(), CheckResult.Item2.ToString()));
+            }
 #endif
-        }
+            }
 
     }
 }

@@ -102,7 +102,7 @@
             // ScreenShotCheckBox
             // 
             this.ScreenShotCheckBox.BackColor = System.Drawing.SystemColors.Control;
-            this.ScreenShotCheckBox.Location = new System.Drawing.Point(1, 127);
+            this.ScreenShotCheckBox.Location = new System.Drawing.Point(1, 123);
             this.ScreenShotCheckBox.Name = "ScreenShotCheckBox";
             this.ScreenShotCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.ScreenShotCheckBox.Size = new System.Drawing.Size(105, 21);
@@ -115,7 +115,7 @@
             this.OpenBoxCheckBox.BackColor = System.Drawing.SystemColors.Control;
             this.OpenBoxCheckBox.Checked = true;
             this.OpenBoxCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.OpenBoxCheckBox.Location = new System.Drawing.Point(1, 149);
+            this.OpenBoxCheckBox.Location = new System.Drawing.Point(1, 145);
             this.OpenBoxCheckBox.Name = "OpenBoxCheckBox";
             this.OpenBoxCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.OpenBoxCheckBox.Size = new System.Drawing.Size(105, 21);
@@ -131,7 +131,7 @@
             this.ScreenShotButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
             this.ScreenShotButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.ScreenShotButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ScreenShotButton.Location = new System.Drawing.Point(102, 127);
+            this.ScreenShotButton.Location = new System.Drawing.Point(102, 123);
             this.ScreenShotButton.Name = "ScreenShotButton";
             this.ScreenShotButton.Size = new System.Drawing.Size(60, 21);
             this.ScreenShotButton.TabIndex = 6;
@@ -146,7 +146,7 @@
             this.OpenBoxButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
             this.OpenBoxButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.OpenBoxButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.OpenBoxButton.Location = new System.Drawing.Point(102, 148);
+            this.OpenBoxButton.Location = new System.Drawing.Point(102, 144);
             this.OpenBoxButton.Name = "OpenBoxButton";
             this.OpenBoxButton.Size = new System.Drawing.Size(60, 21);
             this.OpenBoxButton.TabIndex = 7;
@@ -157,7 +157,7 @@
             // PlayADCheckBox
             // 
             this.PlayADCheckBox.BackColor = System.Drawing.SystemColors.Control;
-            this.PlayADCheckBox.Location = new System.Drawing.Point(1, 171);
+            this.PlayADCheckBox.Location = new System.Drawing.Point(1, 167);
             this.PlayADCheckBox.Name = "PlayADCheckBox";
             this.PlayADCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.PlayADCheckBox.Size = new System.Drawing.Size(105, 21);
@@ -172,7 +172,7 @@
             this.TestButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
             this.TestButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.TestButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.TestButton.Location = new System.Drawing.Point(102, 169);
+            this.TestButton.Location = new System.Drawing.Point(102, 165);
             this.TestButton.Name = "TestButton";
             this.TestButton.Size = new System.Drawing.Size(60, 21);
             this.TestButton.TabIndex = 9;
@@ -186,7 +186,7 @@
             this.OPPOA59SRadioButton.Checked = true;
             this.OPPOA59SRadioButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.OPPOA59SRadioButton.ForeColor = System.Drawing.Color.Tomato;
-            this.OPPOA59SRadioButton.Location = new System.Drawing.Point(11, 78);
+            this.OPPOA59SRadioButton.Location = new System.Drawing.Point(3, 78);
             this.OPPOA59SRadioButton.Name = "OPPOA59SRadioButton";
             this.OPPOA59SRadioButton.Size = new System.Drawing.Size(96, 21);
             this.OPPOA59SRadioButton.TabIndex = 10;
@@ -199,7 +199,7 @@
             this.HUAWEIM3RadioButton.AutoSize = true;
             this.HUAWEIM3RadioButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.HUAWEIM3RadioButton.ForeColor = System.Drawing.Color.Tomato;
-            this.HUAWEIM3RadioButton.Location = new System.Drawing.Point(11, 102);
+            this.HUAWEIM3RadioButton.Location = new System.Drawing.Point(3, 100);
             this.HUAWEIM3RadioButton.Name = "HUAWEIM3RadioButton";
             this.HUAWEIM3RadioButton.Size = new System.Drawing.Size(105, 21);
             this.HUAWEIM3RadioButton.TabIndex = 11;
