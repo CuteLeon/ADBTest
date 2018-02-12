@@ -186,7 +186,7 @@
             this.OPPOA59SRadioButton.Checked = true;
             this.OPPOA59SRadioButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.OPPOA59SRadioButton.ForeColor = System.Drawing.Color.Tomato;
-            this.OPPOA59SRadioButton.Location = new System.Drawing.Point(3, 78);
+            this.OPPOA59SRadioButton.Location = new System.Drawing.Point(6, 78);
             this.OPPOA59SRadioButton.Name = "OPPOA59SRadioButton";
             this.OPPOA59SRadioButton.Size = new System.Drawing.Size(96, 21);
             this.OPPOA59SRadioButton.TabIndex = 10;
@@ -199,7 +199,7 @@
             this.HUAWEIM3RadioButton.AutoSize = true;
             this.HUAWEIM3RadioButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.HUAWEIM3RadioButton.ForeColor = System.Drawing.Color.Tomato;
-            this.HUAWEIM3RadioButton.Location = new System.Drawing.Point(3, 100);
+            this.HUAWEIM3RadioButton.Location = new System.Drawing.Point(6, 100);
             this.HUAWEIM3RadioButton.Name = "HUAWEIM3RadioButton";
             this.HUAWEIM3RadioButton.Size = new System.Drawing.Size(105, 21);
             this.HUAWEIM3RadioButton.TabIndex = 11;
